@@ -9,7 +9,7 @@ ARG GOOS=$TARGETOS
 ARG GOARCH=$TARGETARCH
 ARG RELEASE_DIR=.
 
-RUN echo "I'm building for $GOOS-$GOARCH"
+#RUN echo "I'm building for $GOOS-$GOARCH"
 
 WORKDIR /app
 
