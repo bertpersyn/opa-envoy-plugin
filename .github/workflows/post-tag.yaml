@@ -23,8 +23,8 @@ jobs:
         # Subsequent jobs will be have the computed tag name
         run: echo "TAG_NAME=${GITHUB_REF##*/}" >> $GITHUB_ENV
 
-      - name: Build Release Bin
-        run: make release GOOS=${{ matrix.goos }} GOARCH=${{ matrix.goarch }}
+      - name: Build Bin
+        run: make build GOOS=${{ matrix.goos }} GOARCH=${{ matrix.goarch }}
 
   push:
     name: Push Latest Release Binaries
