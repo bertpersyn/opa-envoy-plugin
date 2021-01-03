@@ -2,8 +2,8 @@
 # Use of this source code is governed by an Apache2
 # license that can be found in the LICENSE file.
 
-ARG GOOS
-ARG GOARCH
+ARG GOOS=TARGETOS
+ARG GOARCH=TARGETARCH
 
 FROM gcr.io/distroless/base
 
