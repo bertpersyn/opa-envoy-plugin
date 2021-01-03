@@ -9,7 +9,8 @@ ARG GOOS=$TARGETOS
 ARG GOARCH=$TARGETARCH
 
 WORKDIR /app
-COPY opa_envoy_${GOOS}_${GOARCH} /app
-ENTRYPOINT ["./opa_envoy_${GOOS}_${GOARCH}"]
+COPY opa_envoy_${GOOS}_${GOARCH} /app/opa_envoy
+
+ENTRYPOINT ["./opa_envoy"]
 
 CMD ["run"]
