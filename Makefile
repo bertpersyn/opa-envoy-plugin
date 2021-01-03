@@ -77,7 +77,7 @@ image:
 	@$(MAKE) image-quick
 
 image-quick:
-	docker build --build-arg GOARCH=$(GOARCH) --build-arg GOOS=$(GOOS) -t $(IMAGE):$(VERSION) -f .Dockerfile .
+	docker build --build-arg GOARCH=$(GOARCH) --build-arg GOOS=$(GOOS) -t $(IMAGE):$(VERSION) -f Dockerfile .
 	docker tag $(IMAGE):$(VERSION) $(IMAGE):$(VERSION_ISTIO)
 
 push:
@@ -114,7 +114,7 @@ test-cluster:
 	@./build/install-istio-with-kind.sh
 
 clean:
-	rm -f .Dockerfile_*
+	rm -f Dockerfile_*
 	rm -f opa_*_*
 	rm -f *.so
 
