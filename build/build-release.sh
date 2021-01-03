@@ -42,7 +42,7 @@ elif [ -z "$SOURCE_URL" ]; then
 fi
 
 build_release() {
-    make -C ./.. build-all-platforms RELEASE_DIR="${OUTPUT_DIR}"
+    make -C $SOURCE_URL build-all-platforms RELEASE_DIR="${OUTPUT_DIR}"
 }
 
 clone_repo() {
