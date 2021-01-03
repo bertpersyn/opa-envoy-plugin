@@ -10,8 +10,8 @@ PACKAGES := $(shell go list ./.../ | grep -v 'vendor')
 
 GO := go
 GOVERSION := $(shell cat ./.go-version)
-GOARCH := $(shell go env GOARCH)
-GOOS := $(shell go env GOOS)
+GOARCH ?= $(shell go env GOARCH)
+GOOS ?= $(shell go env GOOS)
 DISABLE_CGO := CGO_ENABLED=0
 
 BIN := opa_envoy_$(GOOS)_$(GOARCH)
@@ -76,8 +76,7 @@ image:
 	@$(MAKE) image-quick
 
 image-quick:
-	sed -e 's/GOARCH/$(GOARCH)/g' Dockerfile > .Dockerfile_$(GOARCH)
-	docker build -t $(IMAGE):$(VERSION) -f .Dockerfile_$(GOARCH) .
+	docker build --build-arg GOARCH=$(GOARCH) --build-arg GOOS=$(GOOS) -t $(IMAGE):$(VERSION) -f .Dockerfile .
 	docker tag $(IMAGE):$(VERSION) $(IMAGE):$(VERSION_ISTIO)
 
 push:

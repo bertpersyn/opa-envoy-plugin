@@ -2,14 +2,15 @@
 # Use of this source code is governed by an Apache2
 # license that can be found in the LICENSE file.
 
-FROM gcr.io/distroless/base
+ARG GOOS
+ARG GOARCH
 
-MAINTAINER Ashutosh Narkar  <anarkar4387@gmail.com>
+FROM gcr.io/distroless/base
 
 WORKDIR /app
 
-COPY opa_envoy_linux_GOARCH /app
+COPY opa_envoy_${GOOS}_${GOARCH} /app
 
-ENTRYPOINT ["./opa_envoy_linux_GOARCH"]
+ENTRYPOINT ["./opa_envoy_${GOOS}_${GOARCH}"]
 
 CMD ["run"]
