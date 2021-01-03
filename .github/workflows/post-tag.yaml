@@ -25,9 +25,9 @@ jobs:
         id: make_outputs
         run: |
           release_dir=$(make release-dir)
-          lplatforms=$(make linux-platforms)
+          linux_platforms=$(make linux-platforms)
           echo "::set-output name=release_dir::$release_dir"
-          echo "::set-output name=platforms::$linux_platforms"
+          echo "::set-output name=linux_platforms::$linux_platforms"
       - name: show releases
         run: |
           ls -hal ${{ steps.release_dir.outputs.release_dir }}
