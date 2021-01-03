@@ -7,7 +7,7 @@ on:
 
 jobs:
   build:
-    name: Go Bins
+    name: Build and publish
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
@@ -25,9 +25,9 @@ jobs:
         id: make_outputs
         run: |
           release_dir=$(make release-dir)
-          platforms=$(make platforms)
+          lplatforms=$(make linux-platforms)
           echo "::set-output name=release_dir::$release_dir"
-          echo "::set-output name=platforms::$platforms"
+          echo "::set-output name=platforms::$linux_platforms"
       - name: show releases
         run: |
           ls -hal ${{ steps.release_dir.outputs.release_dir }}
@@ -57,7 +57,7 @@ jobs:
         with:
           context: ${{ steps.make_outputs.outputs.release_dir }}
           file: ./Dockerfile
-          platforms: ${{ steps.make_outputs.outputs.platforms }}
+          platforms: ${{ steps.make_outputs.outputs.linux_platforms }}
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.docker_meta.outputs.tags }}
           labels: ${{ steps.docker_meta.outputs.labels }}

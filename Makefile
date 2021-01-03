@@ -41,7 +41,8 @@ LDFLAGS := "-X github.com/open-policy-agent/opa/version.Version=$(VERSION) \
 GO15VENDOREXPERIMENT := 1
 export GO15VENDOREXPERIMENT
 
-PLATFORMS := linux/arm64 linux/amd64 windows/amd64
+LINUX_PLATFORMS := linux/arm64 linux/amd64
+PLATFORMS := $(LINUX_PLATFORMS) windows/amd64
 
 temp = $(subst /, ,$@)
 os = $(word 1, $(temp))
@@ -148,8 +149,8 @@ comma:= ,
 empty:=
 space:= $(empty) $(empty)
 
-platforms:
-	@echo $(subst $(space),$(comma),$(PLATFORMS))
+linux-platforms:
+	@echo $(subst $(space),$(comma),$(LINUX_PLATFORMS))
 
 .PHONY: ensure-release-dir
 ensure-release-dir:
