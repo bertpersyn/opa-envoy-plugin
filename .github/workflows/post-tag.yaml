@@ -21,17 +21,6 @@ jobs:
 
       - name: Build Bins
         run: make release
-
-  push:
-    name: Push Latest Release Binaries
-    needs: build
-    runs-on: ubuntu-18.04
-    steps:
-      -
-        name: Checkout
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
       -
         name: Docker meta
         id: docker_meta
