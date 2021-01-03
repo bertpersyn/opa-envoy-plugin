@@ -41,6 +41,13 @@ LDFLAGS := "-X github.com/open-policy-agent/opa/version.Version=$(VERSION) \
 GO15VENDOREXPERIMENT := 1
 export GO15VENDOREXPERIMENT
 
+PLATFORMS := linux/arm64 linux/amd64 windows/amd64
+
+temp = $(subst /, ,$@)
+os = $(word 1, $(temp))
+arch = $(word 2, $(temp))
+
+
 .PHONY: all build build-darwin build-linux build-windows clean check check-fmt check-vet check-lint \
     deploy-ci docker-login generate image image-quick push push-latest tag-latest \
     test test-cluster test-e2e update-opa update-istio-quickstart-version version
@@ -53,9 +60,6 @@ export GO15VENDOREXPERIMENT
 
 all: build test check
 
-release-dir:
-	@echo $(RELEASE_DIR)
-
 version:
 	@echo $(VERSION)
 
@@ -64,16 +68,6 @@ generate:
 
 build: generate
 	$(GO) build -o $(BIN) -ldflags $(LDFLAGS) ./cmd/opa-envoy-plugin/...
-
-build-darwin:
-	@$(MAKE) build GOOS=darwin
-
-build-linux:
-	@$(MAKE) build GOOS=linux GOARCH=amd64
-	@$(MAKE) build GOOS=linux GOARCH=arm64
-
-build-windows:
-	@$(MAKE) build GOOS=windows
 
 image:
 	@$(MAKE) build-linux
@@ -147,22 +141,23 @@ release:
 		$(RELEASE_BUILD_IMAGE) \
 		/_src/build/build-release.sh --version=$(VERSION) --output-dir=/$(RELEASE_DIR) --source-url=/_src
 
+release-dir:
+	@echo $(RELEASE_DIR)
 
-.PHONY: release-build-linux
-release-build-linux: ensure-release-dir build-linux
-	mv opa_envoy_linux_$(GOARCH) $(RELEASE_DIR)/
+comma:= ,
+empty:=
+space:= $(empty) $(empty)
 
-.PHONY: release-build-darwin
-release-build-darwin: ensure-release-dir build-darwin
-	mv opa_envoy_darwin_$(GOARCH) $(RELEASE_DIR)/
-
-.PHONY: release-build-windows
-release-build-windows: ensure-release-dir build-windows
-	mv opa_envoy_windows_$(GOARCH) $(RELEASE_DIR)/opa_envoy_windows_$(GOARCH).exe
+platforms:
+	@echo $(subst $(space),$(comma),$(PLATFORMS))
 
 .PHONY: ensure-release-dir
 ensure-release-dir:
 	mkdir -p $(RELEASE_DIR)
 
-.PHONY: build-all-platforms
-build-all-platforms: release-build-linux release-build-darwin release-build-windows
+.PHONY: build-all-platforms $(PLATFORMS)
+build-all-platforms: $(PLATFORMS)
+
+$(PLATFORMS): ensure-release-dir
+	@$(MAKE) build GOOS=$(os) GOARCH=$(arch)
+	mv opa_envoy_$(os)_$(arch) $(RELEASE_DIR)/opa_envoy_$(os)_$(arch)$(if $(filter $(os),windows),.exe,)
