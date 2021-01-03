@@ -54,7 +54,7 @@ clone_repo() {
 }
 
 main() {
-    clone_repo
+    #clone_repo
     build_release
 }
 
