@@ -7,12 +7,13 @@ ARG TARGETOS
 ARG TARGETARCH
 ARG GOOS=$TARGETOS
 ARG GOARCH=$TARGETARCH
+ARG RELEASE_DIR=.
 
 RUN echo "I'm building for $GOOS-$GOARCH"
 
 WORKDIR /app
 
-COPY opa_envoy_${GOOS}_${GOARCH} /app
+COPY ${RELEASE_DIR}/opa_envoy_${GOOS}_${GOARCH} /app
 
 ENTRYPOINT ["./opa_envoy_${GOOS}_${GOARCH}"]
 

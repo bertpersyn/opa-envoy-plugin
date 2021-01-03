@@ -53,6 +53,9 @@ export GO15VENDOREXPERIMENT
 
 all: build test check
 
+release-dir:
+	@echo $(RELEASE_DIR)
+
 version:
 	@echo $(VERSION)
 

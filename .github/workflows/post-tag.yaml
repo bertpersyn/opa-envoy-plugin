@@ -21,6 +21,11 @@ jobs:
 
       - name: Build Bins
         run: make release
+      - name: Grab release dir
+        id: release_dir
+        run: |
+          dir=$(make release-dir)
+          echo "::set-output name=release_dir::$dir"
       -
         name: Docker meta
         id: docker_meta
@@ -51,3 +56,5 @@ jobs:
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.docker_meta.outputs.tags }}
           labels: ${{ steps.docker_meta.outputs.labels }}
+          build-args: |
+            RELEASE_DIR=${{ steps.release_dir.outputs.release_dir }}
